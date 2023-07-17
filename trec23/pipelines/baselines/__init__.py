@@ -20,6 +20,10 @@ def load_electra(model_name_or_path : str, **kwargs):
     from pyterrier_dr import ElectraScorer
     return ElectraScorer(model_name_or_path, **kwargs)
 
+def load_monot5(model_name_or_path : str, **kwargs):
+    from pyterrier_t5 import MonoT5ReRanker
+    return MonoT5ReRanker(model=model_name_or_path, **kwargs)
+
 def dph_bo1_dph(index):
     dph = load_batchretrieve(index : Any, model : str = "DPH")
     return dph >> pt.rewrite.Bo1QueryExpansion(index) >> dph
@@ -28,7 +32,7 @@ def load_colbert(model_name_or_path : str, index_path : str, index_name : str, m
     from pyterrier_colbert.ranking import ColBERTFactory
     pytcolbert = ColBERTFactory(model_name_or_path, index_path, index_name)
 
-    return pytcolbert.text_scorer() if mode == 'e2e' else pytcolbert.end_to_end()
+    return pytcolbert.text_scorer() if mode != 'e2e' else pytcolbert.end_to_end()
 
 def bm25_electra(model_name_or_path : str, dataset : str = None, index : Any = None, cut : int = 100, bm25_kwargs : Optional[dict] = {}, electra_kwargs : Optional[dict] = {}):
     if dataset is not None:
