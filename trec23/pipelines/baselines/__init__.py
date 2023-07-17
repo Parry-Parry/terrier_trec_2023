@@ -24,6 +24,12 @@ def dph_bo1_dph(index):
     dph = load_batchretrieve(index, model="DPH")
     return dph >> pt.rewrite.Bo1QueryExpansion(index) >> dph
 
+def load_colbert(model_name_or_path : str, index_path : str, index_name : str, mode='e2e'):
+    from pyterrier_colbert.ranking import ColBERTFactory
+    pytcolbert = ColBERTFactory(model_name_or_path, index_path, index_name)
+
+    return pytcolbert.text_scorer() if mode == 'e2e' else pytcolbert.end_to_end()
+
 def bm25_electra(model_name_or_path, dataset : str = None, index : Any = None, bm25_kwargs : dict = {}, electra_kwargs : dict = {}):
     if dataset is not None:
         bm25 = load_pisa(dataset).bm25(**bm25_kwargs)
