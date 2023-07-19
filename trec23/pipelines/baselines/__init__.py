@@ -25,7 +25,7 @@ def load_monot5(model_name_or_path : str, **kwargs):
     return MonoT5ReRanker(model=model_name_or_path, **kwargs)
 
 def dph_bo1_dph(index):
-    dph = load_batchretrieve(index : Any, model : str = "DPH")
+    dph = load_batchretrieve(index, model = "DPH")
     return dph >> pt.rewrite.Bo1QueryExpansion(index) >> dph
 
 def load_colbert(model_name_or_path : str, index_path : str, index_name : str, mode : str = 'e2e'):

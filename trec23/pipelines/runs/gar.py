@@ -1,5 +1,5 @@
 from pyterrier_adaptive import GAR, CorpusGraph
-from trec23.pipelines.baselines import load_monot5, load_pisa
+from trec23.pipelines.baselines import load_monot5
 from typing import Optional
 
 def load_gar(t5_model_name_or_path : str, 
