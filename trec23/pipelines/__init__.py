@@ -1,7 +1,9 @@
 import pyterrier as pt
 import pandas as pd
+from pyterrier.model import add_ranks
+from copy import deepcopy
 
-class DuplicatorTransformer(pt.transformer):
+class MarcoDuplicator(pt.transformer):
     essential_metadata = ['docno']
     def __init__(self, lookup, **kwargs):
         self.lookup = lookup
@@ -12,18 +14,24 @@ class DuplicatorTransformer(pt.transformer):
 
     def transform(self, input : pd.DataFrame):
         assert self.essential_metadata.issubset(input.columns), f"input must contain {self.essential_metadata}"
-        input = input.copy().reset_index(drop=True)
-        changes = {}
+        input = input.copy()
+
+        changes = []
         for row in input.itertuples():
             if row.docno in self.lookup:
                 tmp = []
                 for id in self.lookup[row.docno]:
-                    tmp_row = row
+                    tmp_row = deepcopy(row)
                     setattr(tmp_row, 'docno', id)
                     tmp.append(tmp_row)
-                changes[row.docno] = pd.DataFrame(tmp)
+                changes.append(pd.DataFrame(tmp))
+        
+        changes = pd.concat(changes, ignore_index=True).reset_index(drop=True)
+        input = pd.concat([input, changes], ignore_index=True).reset_index(drop=True)
 
-        for docno, df_insert in changes.items():      
-            input = self.insert_row(input.index[input['docno'] == docno].tolist()[0], input, df_insert)
+        input.drop(['rank'], axis=1, inplace=True)
+        input = add_ranks(input)
+
+        return input
 
         
