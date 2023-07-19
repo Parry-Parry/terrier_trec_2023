@@ -9,9 +9,6 @@ class MarcoDuplicator(pt.transformer):
         self.lookup = lookup
         super().__init__(**kwargs)
 
-    def insert_row(self, idx, df, df_insert):
-        return df.iloc[:idx, ].append(df_insert).append(df.iloc[idx:, ]).reset_index(drop = True)
-
     def transform(self, input : pd.DataFrame):
         assert self.essential_metadata.issubset(input.columns), f"input must contain {self.essential_metadata}"
         input = input.copy()
