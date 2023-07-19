@@ -49,5 +49,3 @@ def splade_electra(splade_model_name_or_path : str, electra_model_name_or_path :
 
 def dph_bo1_dph_electra(index : Any, electra_model_name_or_path : str, cut : int = 100, electra_kwargs : Optional[dict] = {}):
     return dph_bo1_dph(index) % cut >> load_electra(electra_model_name_or_path, **electra_kwargs)
-
-
