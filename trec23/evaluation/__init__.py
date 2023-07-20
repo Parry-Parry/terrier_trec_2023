@@ -41,7 +41,7 @@ def dual_experiment(*models, dataset=None, **kwargs):
         "retr_systems" : list(models),
         "topics" : topics,
         "qrels" : qrels,
-        "metrics" : kwargs.get("metrics", ["map", "ndcg_cut_10", "mrr"]),
+        "metrics" : kwargs.get("metrics", ["map", "ndcg_cut_10", "mrr_cut_10"]),
         "names" : kwargs.get("names", [f'model_{i}' for i in range(len(models))]),
         "batch_size" : kwargs.get("batch_size", None),
         "save_dir" : kwargs.get("save_dir", None),
