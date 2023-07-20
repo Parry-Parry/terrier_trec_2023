@@ -9,3 +9,6 @@ try:
             CONFIG = {}
 except FileNotFoundError:
     CONFIG = {}
+
+if __name__ == '__main__':
+    print(CONFIG)
