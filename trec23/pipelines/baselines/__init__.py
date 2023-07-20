@@ -6,8 +6,11 @@ from typing import Any, Optional
 def load_batchretrieve(index : Any, controls : Optional[dict] = None, properties : Optional[dict] = None, model : str = 'BM25'):
     return pt.BatchRetrieve(index, model=model, controls=controls, properties=properties)
 
-def load_pisa(dataset : str):
+def load_pisa(dataset : str = None, path : str = None):
+    assert dataset is not None or path is not None, "Either dataset or path must be specified"
     from pyterrier_pisa import PisaIndex
+    if path is not None:
+        return PisaIndex(path)
     return PisaIndex.from_dataset(dataset)
 
 def load_splade(model_name_or_path : str, **kwargs):
