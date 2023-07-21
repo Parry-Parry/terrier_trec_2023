@@ -3,21 +3,30 @@ if not pt.started():
     pt.init()
 from typing import Any, Optional
 
-def load_batchretrieve(index : Any, controls : Optional[dict] = None, properties : Optional[dict] = None, model : str = 'BM25'):
+def load_batchretrieve(index : Any, 
+                       controls : Optional[dict] = None, 
+                       properties : Optional[dict] = None, 
+                       model : str = 'BM25'):
     return pt.BatchRetrieve(index, model=model, controls=controls, properties=properties)
 
-def load_pisa(dataset : str = None, path : str = None, **kwargs):
+def load_pisa(dataset : str = None, 
+              path : str = None, 
+              **kwargs):
     assert dataset is not None or path is not None, "Either dataset or path must be specified"
     from pyterrier_pisa import PisaIndex
     if path is not None:
         return PisaIndex(path, **kwargs)
     return PisaIndex.from_dataset(dataset, **kwargs)
 
-def load_splade(model_name_or_path : str, **kwargs):
+def load_splade(model_name_or_path : str, 
+                pisa_path : str, 
+                pisa_kwargs : dict = {}, 
+                **kwargs):
     import pyt_splade
-    mult = kwargs.pop("mult", 100)
+    mult = kwargs.pop("mult", 100.)
+    pisa = load_pisa(path=pisa_path, **pisa_kwargs)
     splade = pyt_splade.SpladeFactory(model_name_or_path, **kwargs)
-    return splade.query(mult=mult)
+    return splade.query_encoder(scale=float(mult)) >> pisa.quantized()
 
 def load_electra(model_name_or_path : str, **kwargs):
     from pyterrier_dr import ElectraScorer
