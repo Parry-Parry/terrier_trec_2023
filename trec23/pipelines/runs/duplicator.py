@@ -3,7 +3,7 @@ import pandas as pd
 from pyterrier.model import add_ranks
 from copy import deepcopy
 
-class MarcoDuplicator(pt.transformer):
+class MarcoDuplicator(pt.Transformer):
     essential_metadata = ['docno']
     def __init__(self, lookup, **kwargs):
         self.lookup = lookup
@@ -30,5 +30,3 @@ class MarcoDuplicator(pt.transformer):
         input = add_ranks(input)
 
         return input
-
-        
