@@ -13,6 +13,10 @@ except FileNotFoundError:
     logging.warning("No CONFIG.json file found. Using default configuration.")
     CONFIG = {}
 
+from . import pipelines
+from . import utility
+from . import evaluation
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     print(CONFIG)
