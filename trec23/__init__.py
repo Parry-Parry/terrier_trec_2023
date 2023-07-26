@@ -1,15 +1,18 @@
 import os 
+from os.path import join
 import json 
 import logging
-
-from . import runs
-from . import utility
-from . import evaluation
+from typing import Any, Optional
 
 import pyterrier as pt
-if not pt.started():
-    pt.init()
-from typing import Any, Optional
+
+from .runs.duplicator import MarcoDuplicator
+from .runs.gar import load_gar
+from .runs.genqr import load_qr, load_prf
+from .evaluation import dual_experiment, generate_experiment
+from .copy_pisa import copy_index
+
+METRICS = []
 
 def load_batchretrieve(index : Any, 
                        controls : Optional[dict] = None, 
@@ -52,6 +55,19 @@ def load_colbert(model_name_or_path : str,
     pytcolbert = ColBERTFactory(model_name_or_path, index_path, index_name)
 
     return pytcolbert.text_scorer() if mode != 'e2e' else pytcolbert.end_to_end()
+
+def evaluate(model, out_dir : str, irds : str, path : str, name : str):
+    if not pt.started():
+        pt.init()
+    if irds is not None:
+        ds = pt.get_dataset(irds)
+        std, per_query = dual_experiment(model, names=[name], dataset=ds, metrics=METRICS)
+        std.to_csv(join(out_dir, f'results.tsv'), sep='\t', index=False)
+        per_query.to_csv(join(out_dir, f'perquery.tsv'), sep='\t', index=False)
+    else:
+        topics = pt.io.read_topics(path)
+        results = model.transform(topics)
+        pt.io.write_results(results, join(out_dir, f'{name}.trec'))
 
 try:
     os.chdir('/')
