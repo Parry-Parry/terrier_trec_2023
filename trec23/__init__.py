@@ -56,7 +56,7 @@ def evaluate(model, out_dir : str, irds : str, path : str, name : str):
         pt.init()
     if irds is not None:
         ds = pt.get_dataset(irds)
-        std, per_query = dual_experiment(model, names=[name], dataset=ds, eval_metrics=METRICS)
+        std, per_query = dual_experiment(model, names=[name], dataset=ds, metrics=METRICS)
         std.to_csv(join(out_dir, f'results.tsv'), sep='\t', index=False)
         per_query.to_csv(join(out_dir, f'perquery.tsv'), sep='\t', index=False)
     else:
