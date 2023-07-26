@@ -14,12 +14,12 @@ def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, 
     # check if director '/tmp/index.pisa' exists   
     if not os.path.exists('/tmp/msmarco-passage-v2-dedup.pisa'):
         logging.info('Copying PISA index...')
-        trec23.copy_index(path=trec23.config["PISA_PATH"])
+        trec23.copy_index(path=trec23.CONFIG["PISA_PATH"])
         logging.info('Done.')
 
     if not os.path.exists('/tmp/msmarco-passage-v2-dedup.splade.pisa'):
         logging.info('Copying PISA SPLADE index...')
-        trec23.copy_index(path=trec23.config["PISA_SPLADE_PATH"])
+        trec23.copy_index(path=trec23.CONFIG["PISA_SPLADE_PATH"])
         logging.info('Done.')
 
     for script in scripts:
