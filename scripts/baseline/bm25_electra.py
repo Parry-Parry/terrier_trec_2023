@@ -24,7 +24,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     bm25 = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa').bm25()
     electra = trec23.load_electra(CONFIG['ELECTRA_BASE_PATH'], device=device)
-    model = bm25 % budget >> pt.get_text(text_ref, 'body') >> electra
+    model = bm25 % budget >> pt.get_text(text_ref, 'text') >> electra
 
     logging.info('Done.')
 
