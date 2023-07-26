@@ -25,6 +25,9 @@ def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, 
     for script in scripts:
         path = join(script_dir, script)
         name = script.strip('.py')
+        if os.path.isdir(join(out_dir, name)):
+            logging.info(f'Skipping {name} as it already exists.')
+            continue
         args = f'python {path} --out_dir {join(out_dir, name)} --irds {irds} --path {path} --name {name} --budget {budget}'
         logging.info(f'Running {args}')
         sp.run(args, shell=True)
