@@ -7,12 +7,6 @@ from typing import Any, Optional
 import pyterrier as pt
 from pyterrier.measures import *
 
-from .runs.duplicator import MarcoDuplicator
-from .runs.gar import load_gar
-from .runs.genqr import load_qr, load_prf
-from .evaluation import dual_experiment, generate_experiment
-from .copy_pisa import copy_index
-
 METRICS = [nDCG@10, nDCG@100, R(rel=2)@100, R(rel=2)@1000, Judged@10, Judged@100, P(rel=2)@10]
 
 def load_batchretrieve(index : Any, 
@@ -82,6 +76,11 @@ except FileNotFoundError:
     logging.warning("No CONFIG.json file found. Using default configuration.")
     CONFIG = {}
 
+from .runs.duplicator import MarcoDuplicator
+from .runs.gar import load_gar
+from .runs.genqr import load_qr, load_prf
+from .evaluation import dual_experiment, generate_experiment
+from .copy_pisa import copy_index
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
