@@ -21,7 +21,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     logging.info('Loading model...')
 
     index = pt.IndexFactory.of(CONFIG['TERRIER_MARCOv2_PATH'])
-    text_ref = pt.Batchretrieve(index, metadata=['docno', 'text'])
+    text_ref = pt.BatchRetrieve(index, metadata=['docno', 'text'])
     dph = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa').dph()
     dph_expand = dph % budget >> pt.rewrite.Bo1QueryExpansion(index) >> dph 
     electra = trec23.load_electra(CONFIG['ELECTRA_BASE_PATH'], device=device)
