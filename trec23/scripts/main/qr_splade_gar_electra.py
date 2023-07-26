@@ -23,7 +23,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     text_ref = pt.Batchretrieve(CONFIG['TERRIER_MARCOv2_PATH'], metadata=['docno', 'text'])
 
-    flan = trec23.load_flan(CONFIG['FLANT5_XXL_PATH'], device=devices[0], device_map='auto', load_in_8bit=True)
+    flan = trec23.load_flan(CONFIG['FLANT5_XXL_PATH'], device=devices[0], device_map='sequential', load_in_8bit=True)
     qr = trec23.load_qr(flan)
     splade = trec23.load_splade(CONFIG['SPLADE_MARCOv2_PATH'], '/tmp/index.pisa')
     electra = trec23.load_electra(CONFIG['ELECTRA_MARCOv2_PATH'], device=devices[1])
