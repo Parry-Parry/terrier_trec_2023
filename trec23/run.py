@@ -18,7 +18,7 @@ def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, 
         logging.info('Done.')
 
     if not os.path.exists('/tmp/msmarco-passage-v2-dedup.splade.pisa'):
-        logging.info('Copying PISA index...')
+        logging.info('Copying PISA SPLADE index...')
         trec23.copy_index(type="PISA_SPLADE_PATH")
         logging.info('Done.')
 
