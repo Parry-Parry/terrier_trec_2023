@@ -13,7 +13,7 @@ from .runs.genqr import load_qr, load_prf
 from .evaluation import dual_experiment, generate_experiment
 from .copy_pisa import copy_index
 
-METRICS = [nDCG@10, nDCG@100, R(rel=2)@100, R(rel=2)@1000]
+METRICS = [nDCG@10, nDCG@100, R(rel=2)@100, R(rel=2)@1000, Judged@10, Judged@100, P(rel=2)@10]
 
 def load_batchretrieve(index : Any, 
                        controls : Optional[dict] = None, 

@@ -9,6 +9,7 @@ import os
 from fire import Fire
 
 import torch
+import logging
 
 def main(out_dir : str, irds : str = None, path : str = None, name : str = None, budget : int = 5000):
     assert irds is not None or path is not None, 'Either irds or path must be specified'
@@ -17,6 +18,8 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     ### LOAD MODEL ###
 
+    logging.info('Loading model...')
+
     index = pt.IndexFactory.of(CONFIG['TERRIER_MARCOv2_PATH'])
     text_ref = pt.Batchretrieve(index, metadata=['docno', 'text'])
     dph = trec23.load_pisa(path='/tmp/index.pisa').dph()
@@ -24,10 +27,15 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     electra = trec23.load_electra(CONFIG['ELECTRA_BASE_PATH'], device=device)
     model = dph_expand >> pt.get_text(text_ref, "body") >> electra
 
+    logging.info('Done.')
+
     ### EVALUATE ###
 
+    logging.info('Evaluating model...')
     evaluate(model, out_dir, irds, path, name)
+    logging.info('Done.')
     
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
     Fire(main)
         
