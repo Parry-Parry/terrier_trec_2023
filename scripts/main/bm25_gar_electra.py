@@ -20,11 +20,11 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     logging.info('Loading model...')
 
-    text_ref = pt.BatchRetrieve(CONFIG['TERRIER_MARCOv2_PATH'], metadata=['docno', 'text'])
+    text_ref = pt.IndexFactory.of(CONFIG['TERRIER_MARCOv2_PATH'])
     bm25 = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa').bm25()
     electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device)
     gar = trec23.load_gar(electra, CONFIG['GAR_GRAPH_PATH'], device=device)
-    model = bm25 % budget >> pt.text.get_text(text_ref, 'text') >> gar
+    model = bm25 % budget >> pt.text.get_text(text_ref, 'body') >> gar
 
     logging.info('Done.')
 

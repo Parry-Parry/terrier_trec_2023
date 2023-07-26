@@ -20,13 +20,13 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     logging.info('Loading model...')
 
-    text_ref = pt.BatchRetrieve(CONFIG['TERRIER_MARCOv2_PATH'], metadata=['docno', 'text'])
+    text_ref = pt.IndexFactory.of(CONFIG['TERRIER_MARCOv2_PATH'])
 
     flan = trec23.load_flan(CONFIG['FLANT5_XXL_PATH'], device=devices[0], device_map='sequential', load_in_8bit=True)
     qr = trec23.load_qr(flan)
     splade = trec23.load_splade(CONFIG['SPLADE_MARCOv2_PATH'], '/tmp/msmarco-passage-v2-dedup.splade.pisa', device=devices[1])
     electra = trec23.load_electra(CONFIG['ELECTRA_MARCOv2_PATH'], device=devices[1])
-    model = qr >> splade % budget >> pt.text.get_text(text_ref, 'text') >> electra
+    model = qr >> splade % budget >> pt.text.get_text(text_ref, 'body') >> electra
 
     logging.info('Done.')
 
