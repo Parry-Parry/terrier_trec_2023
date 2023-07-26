@@ -24,7 +24,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     text_ref = pt.BatchRetrieve(index, metadata=['docno', 'text'])
     dph = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa').dph()
     dph_expand = dph % budget >> pt.rewrite.Bo1QueryExpansion(index) >> dph 
-    electra = trec23.load_electra(CONFIG['ELECTRA_BASE_PATH'], device=device)
+    electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device)
     model = dph_expand >> pt.get_text(text_ref, "text") >> electra
 
     logging.info('Done.')
