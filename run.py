@@ -9,7 +9,7 @@ def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, 
     assert irds is not None or path is not None, 'Either irds or path must be specified'
     os.makedirs(out_dir, exist_ok=True)
 
-    scripts = [f for f in os.listdir(script_dir)]
+    scripts = [f for f in os.listdir(script_dir) if not '__' in f]
 
     # check if director '/tmp/index.pisa' exists   
     if not os.path.exists('/tmp/msmarco-passage-v2-dedup.pisa'):
