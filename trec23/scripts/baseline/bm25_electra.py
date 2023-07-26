@@ -17,7 +17,6 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     ### LOAD MODEL ###
 
-    index = pt.IndexFactory.of()
     text_ref = pt.Batchretrieve(CONFIG['TERRIER_MARCOv2_PATH'], metadata=['docno', 'text'])
 
     bm25 = trec23.load_pisa(path='/tmp/index.pisa').bm25()
