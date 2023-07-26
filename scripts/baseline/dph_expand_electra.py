@@ -24,7 +24,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     dph = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa').dph()
     dph_expand = dph % budget >> pt.rewrite.Bo1QueryExpansion(index) >> dph 
     electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device)
-    model = dph_expand >> pt.get_text(text_ref, "text") >> electra
+    model = dph_expand >> pt.text.get_text(text_ref, "text") >> electra
 
     logging.info('Done.')
 

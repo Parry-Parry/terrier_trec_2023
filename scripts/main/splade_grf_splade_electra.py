@@ -26,7 +26,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     prf = trec23.load_prf(flan)
     splade = trec23.load_splade(CONFIG['SPLADE_MARCOv2_PATH'], '/tmp/msmarco-passage-v2-dedup.splade.pisa', device=devices[1])
     electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=devices[1])
-    splade_expand = splade % budget >> pt.get_text(text_ref, 'text') >> prf >> splade
+    splade_expand = splade % budget >> pt.text.get_text(text_ref, 'text') >> prf >> splade
     model = splade_expand >> pt.apply.generic(lambda x : pt.model.pop_queries(x))  >> electra
 
     logging.info('Done.')

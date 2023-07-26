@@ -27,7 +27,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     splade = trec23.load_splade(CONFIG['SPLADE_MARCOv2_PATH'], '/tmp/msmarco-passage-v2-dedup.splade.pisa', device=devices[1])
     electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=devices[1])
-    model = qr >> splade % budget >> pt.get_text(text_ref, 'text') >> electra
+    model = qr >> splade % budget >> pt.text.get_text(text_ref, 'text') >> electra
 
     logging.info('Done.')
 
