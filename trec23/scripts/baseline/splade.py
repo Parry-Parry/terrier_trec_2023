@@ -20,7 +20,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     logging.info('Loading model...')
 
-    splade = trec23.load_splade(CONFIG['SPLADE_MARCOv2_PATH'], '/tmp/index.pisa', device=device)
+    splade = trec23.load_splade(CONFIG['SPLADE_MARCOv2_PATH'], '/tmp/msmarco-passage-v2-dedup.splade.pisa', device=device)
     model = splade % budget
 
     logging.info('Done.')

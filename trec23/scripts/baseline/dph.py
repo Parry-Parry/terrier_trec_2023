@@ -20,7 +20,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     logging.info('Loading model...')
 
-    dph = trec23.load_pisa(path='/tmp/index.pisa').dph()
+    dph = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa').dph()
     model = dph % budget
 
     logging.info('Done.')
