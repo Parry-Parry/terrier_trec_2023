@@ -1,7 +1,8 @@
 import pyterrier as pt
 
 def generate_experiment(*models, dataset=None, **kwargs):
-    if pt.not_started(): pt.init()
+    if not pt.started(): 
+        pt.init()
     if not dataset:
         topics = kwargs.get("topics", None)
         qrels = kwargs.get("qrels", None)
@@ -28,7 +29,8 @@ def generate_experiment(*models, dataset=None, **kwargs):
     return pt.Experiment(**args)
 
 def dual_experiment(*models, dataset=None, **kwargs):
-    if pt.not_started(): pt.init()
+    if not pt.started(): 
+        pt.init()
     if not dataset:
         topics = kwargs.get("topics", None)
         qrels = kwargs.get("qrels", None)
