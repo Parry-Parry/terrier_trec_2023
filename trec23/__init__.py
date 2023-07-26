@@ -5,6 +5,7 @@ import logging
 from typing import Any, Optional
 
 import pyterrier as pt
+from pyterrier.measures import *
 
 from .runs.duplicator import MarcoDuplicator
 from .runs.gar import load_gar
@@ -12,7 +13,7 @@ from .runs.genqr import load_qr, load_prf
 from .evaluation import dual_experiment, generate_experiment
 from .copy_pisa import copy_index
 
-METRICS = []
+METRICS = [nDCG@10, nDCG@100, R(rel=2)@100, R(rel=2)@1000]
 
 def load_batchretrieve(index : Any, 
                        controls : Optional[dict] = None, 
