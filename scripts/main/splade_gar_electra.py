@@ -13,7 +13,6 @@ import logging
 
 def main(out_dir : str, irds : str = None, path : str = None, name : str = None, budget : int = 5000):
     assert irds is not None or path is not None, 'Either irds or path must be specified'
-    os.makedirs(out_dir, exist_ok=True)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     devices = ['cuda:0', 'cuda:1', 'cuda:2', 'cuda:3']
     

@@ -57,11 +57,13 @@ def evaluate(model, out_dir : str, irds : str, path : str, name : str):
     if irds is not None:
         ds = pt.get_dataset(irds)
         std, per_query = dual_experiment(model, names=[name], dataset=ds, metrics=METRICS)
+        os.makedirs(out_dir, exist_ok=True)
         std.to_csv(join(out_dir, f'results.tsv'), sep='\t', index=False)
         per_query.to_csv(join(out_dir, f'perquery.tsv'), sep='\t', index=False)
     else:
         topics = pt.io.read_topics(path)
         results = model.transform(topics)
+        os.makedirs(out_dir, exist_ok=True)
         pt.io.write_results(results, join(out_dir, f'{name}.trec'))
 
 try:
