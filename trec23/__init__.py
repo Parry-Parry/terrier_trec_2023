@@ -13,7 +13,7 @@ def load_batchretrieve(index : Any,
                        controls : Optional[dict] = None, 
                        properties : Optional[dict] = None, 
                        model : str = 'BM25'):
-    return pt.BatchRetrieve(index, model=model, controls=controls, properties=properties)
+    return pt.BatchRetrieve(index, wmodel=model, controls=controls, properties=properties)
 
 def load_pisa(dataset : str = None, 
               path : str = None, 
