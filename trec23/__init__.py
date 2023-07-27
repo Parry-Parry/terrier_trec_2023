@@ -7,6 +7,8 @@ from typing import Any, Optional
 import pyterrier as pt
 from pyterrier.measures import *
 
+import pandas as pd
+
 METRICS = [nDCG@10, nDCG@100, R(rel=2)@100, R(rel=2)@1000, RR(rel=2)@10, AP(rel=2)@100, AP(rel=2)@1000, Judged@10, Judged@100, P(rel=2)@10]
 
 def load_batchretrieve(index : Any, 
@@ -51,6 +53,14 @@ def load_colbert(model_name_or_path : str,
 
     return pytcolbert.text_scorer() if mode != 'e2e' else pytcolbert.end_to_end()
 
+def space_reader(path : str):
+    records = []
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            toks = line.split(' ')
+            records.append({'qid': toks[0], 'query': ' '.join(toks[1:])})
+    return pd.DataFrame.from_records(records)
+
 def evaluate(model, out_dir : str, irds : str, path : str, name : str):
     if not pt.started():
         pt.init()
@@ -61,7 +71,7 @@ def evaluate(model, out_dir : str, irds : str, path : str, name : str):
         std.to_csv(join(out_dir, f'results.tsv'), sep='\t', index=False)
         per_query.to_csv(join(out_dir, f'perquery.tsv'), sep='\t', index=False)
     else:
-        topics = pt.io.read_topics(path, format='singleline')
+        topics = space_reader(path)
         results = model.transform(topics)
         os.makedirs(out_dir, exist_ok=True)
         pt.io.write_results(results, join(out_dir, f'{name}.trec'))
