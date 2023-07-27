@@ -24,8 +24,8 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     qr = trec23.load_qr(CONFIG['FLANT5_XXL_PATH'], llm_kwargs={'device_map' : 'sequential', 'load_in_8bit' : True, 'device' : device})
     bm25 = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa', threads=4).bm25()
-    electra = pt.text.get_text(text_ref, 'text') >> trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size)
-    gar = trec23.load_gar(electra, CONFIG['GAR_GRAPH_PATH'], num_results=budget, batch_size=batch_size)
+    electra = pt.text.get_text(text_ref, 'text') >> trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
+    gar = trec23.load_gar(electra, CONFIG['GAR_GRAPH_PATH'], num_results=budget, batch_size=batch_size, verbose=True)
     model = qr >> bm25 % budget >> pt.text.get_text(text_ref, 'text') >> gar
 
     logging.info('Done.')
