@@ -23,7 +23,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     text_ref = pt.get_dataset('irds:msmarco-passage-v2')
 
     qr = trec23.load_qr(CONFIG['FLANT5_XXL_PATH'], llm_kwargs={'device_map' : 'sequential', 'load_in_8bit' : True, 'device' : devices[0]})
-    bm25 = trec23.load_batchretrieve(index=CONFIG["TERRIER_MARCOv2_PATH"], model="BM25")
+    bm25 = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa').bm25()
     electra = trec23.load_electra(CONFIG['ELECTRA_MARCOv2_PATH'], device=devices[1])
     model = qr >> bm25 % budget >> pt.text.get_text(text_ref, 'text') >> electra
 
