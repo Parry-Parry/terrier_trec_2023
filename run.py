@@ -23,6 +23,7 @@ def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, 
         logging.info('Done.')
     if script_name is not None:
         scripts = [script_name]
+        
     for script in scripts:
         path = join(script_dir, script)
         name = script.strip('.py')
