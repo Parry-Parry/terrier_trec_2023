@@ -21,6 +21,7 @@ def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, 
         logging.info('Copying PISA SPLADE index...')
         trec23.copy_index(path=trec23.CONFIG["PISA_SPLADE_PATH"])
         logging.info('Done.')
+        
     if script_name is not None:
         scripts = [script_name]
 
