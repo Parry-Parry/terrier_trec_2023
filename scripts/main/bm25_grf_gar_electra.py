@@ -25,7 +25,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     prf = trec23.load_prf(CONFIG['FLANT5_XXL_PATH'], llm_kwargs={'device_map' : 'sequential', 'load_in_8bit' : True, 'device' : devices[0]})
     bm25 = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa', threads=4).bm25()
     electra = pt.text.get_text(text_ref, 'text') >> trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device)
-    gar = trec23.load_gar(electra, CONFIG['GAR_GRAPH_PATH'], num_results=budget, batch_size=16)
+    gar = trec23.load_gar(electra, CONFIG['GAR_GRAPH_PATH'], num_results=budget)
     bm25_expand = bm25 % budget >> pt.text.get_text(text_ref, 'text') >> prf >> bm25
     model = bm25_expand >> pt.apply.generic(lambda x : pt.model.pop_queries(x))  >> gar
 

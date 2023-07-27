@@ -11,7 +11,7 @@ from fire import Fire
 import torch
 import logging
 
-def main(out_dir : str, irds : str = None, path : str = None, name : str = None, budget : int = 5000):
+def main(out_dir : str, irds : str = None, path : str = None, name : str = None, batch_size : int = 16, budget : int = 5000):
     assert irds is not None or path is not None, 'Either irds or path must be specified'
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     devices = ['cuda:0', 'cuda:1', 'cuda:2', 'cuda:3']
@@ -24,7 +24,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     prf = trec23.load_prf(CONFIG['FLANT5_XXL_PATH'], llm_kwargs={'device_map' : 'sequential', 'load_in_8bit' : True, 'device' : devices[0]})
     bm25 = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa', threads=4).bm25()
-    electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=devices[1])
+    electra = pt.text.get_text(text_ref, 'text') >> trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size)
     bm25_expand = bm25 % budget >> pt.text.get_text(text_ref, 'text') >> prf >> bm25
     model = bm25_expand >> pt.apply.generic(lambda x : pt.model.pop_queries(x))  >> electra
 
