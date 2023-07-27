@@ -5,7 +5,7 @@ import subprocess as sp
 import logging
 import trec23
 
-def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, budget : int = 5000):
+def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, budget : int = 5000, script_name : str = None):
     assert irds is not None or path is not None, 'Either irds or path must be specified'
     os.makedirs(out_dir, exist_ok=True)
 
@@ -21,7 +21,8 @@ def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, 
         logging.info('Copying PISA SPLADE index...')
         trec23.copy_index(path=trec23.CONFIG["PISA_SPLADE_PATH"])
         logging.info('Done.')
-
+    if script_name is not None:
+        scripts = [script_name]
     for script in scripts:
         path = join(script_dir, script)
         name = script.strip('.py')
