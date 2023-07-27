@@ -7,7 +7,7 @@ from typing import Any, Optional
 import pyterrier as pt
 from pyterrier.measures import *
 
-METRICS = [nDCG@10, nDCG@100, R(rel=2)@100, R(rel=2)@1000, Judged@10, Judged@100, P(rel=2)@10]
+METRICS = [nDCG@10, nDCG@100, R(rel=2)@100, R(rel=2)@1000, RR(rel=2)@10, AP(rel=2)@100, AP(rel=2)@1000, Judged@10, Judged@100, P(rel=2)@10]
 
 def load_batchretrieve(index : Any, 
                        controls : Optional[dict] = None, 
