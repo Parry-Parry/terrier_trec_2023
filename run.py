@@ -31,7 +31,9 @@ def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, 
         if os.path.isdir(join(out_dir, name)):
             logging.info(f'Skipping {name} as it already exists.')
             continue
-        args = f'python {spath} --out_dir {join(out_dir, name)} --irds {irds} --path {path} --name {name} --batch_size {batch_size} --budget {budget}'
+        args = f'python {spath} --out_dir {join(out_dir, name)}  --name {name} --batch_size {batch_size} --budget {budget}'
+        if irds: args += f' --irds {irds}'
+        if path: args += f' --path {path}'
         logging.info(f'Running {args}')
         sp.run(args, shell=True)
 
