@@ -3,7 +3,7 @@ if not pt.started():
     pt.init()
 
 import trec23
-from trec23 import CONFIG, evaluate
+from trec23 import CONFIG, evaluate, copy_path
 import os
 
 from fire import Fire
@@ -19,6 +19,9 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     ### LOAD MODEL ###
 
     logging.info('Loading model...')
+    logging.info('Copying Corpus Graph...')
+    corpus_graph_dir = copy_path(CONFIG['CORPUS_GRAPH_PATH'])
+    logging.info('Corpus Graph Copied.')
 
     text_ref = pt.get_dataset('irds:msmarco-passage-v2')
     bm25 = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa', threads=4).bm25()

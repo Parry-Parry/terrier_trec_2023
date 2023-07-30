@@ -3,6 +3,7 @@ from os.path import join
 import json 
 import logging
 from typing import Any, Optional
+import shutil
 
 import pyterrier as pt
 from pyterrier.measures import *
@@ -65,6 +66,11 @@ def evaluate(model, out_dir : str, irds : str, path : str, name : str):
         results = model.transform(topics)
         os.makedirs(out_dir, exist_ok=True)
         pt.io.write_results(results, join(out_dir, f'{name}.res.gz'))
+
+def copy_path(path : str):
+    base = os.path.basename(path)
+    new_dir = shutil.copytree(path, os.path.join('tmp', base))
+    return new_dir
 
 try:
     os.chdir('/')

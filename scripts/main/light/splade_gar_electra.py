@@ -3,7 +3,7 @@ if not pt.started():
     pt.init()
 
 import trec23
-from trec23 import CONFIG, evaluate
+from trec23 import CONFIG, evaluate, copy_path
 import os
 
 from fire import Fire
@@ -19,11 +19,16 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     ### LOAD MODEL ###
 
     logging.info('Loading model...')
-
+    logging.info('Copying SPLADE...')
+    splade_dir = copy_path(CONFIG['SPLADE_MARCOv2_PATH'])
+    logging.info('SPLADE Copied.')
+    logging.info('Copying Corpus Graph...')
+    corpus_graph_dir = copy_path(CONFIG['CORPUS_GRAPH_PATH'])
+    logging.info('Corpus Graph Copied.')
     text_ref = pt.get_dataset('irds:msmarco-passage-v2')
-    splade = trec23.load_splade(CONFIG['SPLADE_MARCOv2_PATH'], '/tmp/msmarco-passage-v2-dedup.splade.pisa', device=device)
+    splade = trec23.load_splade(splade_dir, '/tmp/msmarco-passage-v2-dedup.splade.pisa', device=device)
     electra = pt.text.get_text(text_ref, 'text') >> trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
-    gar = trec23.load_gar(electra, CONFIG['GAR_GRAPH_PATH'], num_results=budget, batch_size=batch_size, verbose=True)
+    gar = trec23.load_gar(electra, corpus_graph_dir, num_results=budget, batch_size=batch_size, verbose=True)
     model = splade % budget >> gar
 
     logging.info('Done.')
