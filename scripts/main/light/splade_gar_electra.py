@@ -3,7 +3,7 @@ if not pt.started():
     pt.init()
 
 import trec23
-from trec23 import CONFIG, evaluate, copy_path
+from trec23 import CONFIG, evaluate, copy_path, H5CacheScorer
 import os
 
 from fire import Fire
@@ -27,8 +27,9 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     logging.info('Corpus Graph Copied.')
     text_ref = pt.get_dataset('irds:msmarco-passage-v2')
     splade = trec23.load_splade(splade_dir, '/tmp/msmarco-passage-v2-dedup.splade.pisa', device=device)
-    electra = pt.text.get_text(text_ref, 'text') >> trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
-    gar = trec23.load_gar(electra, corpus_graph_dir, num_results=budget, batch_size=batch_size, verbose=True)
+    electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
+    scorer = pt.text.get_text(text_ref, 'text') >> H5CacheScorer('/resources/electracache', electra)
+    gar = trec23.load_gar(scorer, corpus_graph_dir, num_results=budget, verbose=True, batch_size=batch_size)
     model = splade % budget >> gar
 
     logging.info('Done.')

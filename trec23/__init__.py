@@ -87,6 +87,7 @@ except FileNotFoundError:
 from .runs.duplicator import MarcoDuplicator
 from .runs.gar import load_gar
 from .runs.genqr import load_qr, load_prf
+from .runs.h5cache import H5CacheScorer
 from .evaluation import dual_experiment, generate_experiment
 from .copy_pisa import copy_index
 
