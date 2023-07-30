@@ -29,7 +29,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     bm25 = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa', threads=4).bm25()
     electra = pt.text.get_text(text_ref, 'text') >> trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
     gar = trec23.load_gar(electra, corpus_graph_dir, num_results=budget, batch_size=batch_size, verbose=True)
-    model = qr >> bm25 % budget >> gar
+    model = qr >> bm25 % budget >> pt.apply.generic(lambda x : pt.model.pop_queries(x)) >> gar
 
     logging.info('Done.')
 
