@@ -25,8 +25,12 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     text_ref = pt.get_dataset('irds:msmarco-passage-v2')
     bm25 = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa', threads=4).bm25()
+    '''
     electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
     scorer = pt.text.get_text(text_ref, 'text') >> H5CacheScorer('/resources/electracache', electra)
+    '''
+    electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
+    scorer = pt.text.get_text(text_ref, 'text') >> electra
     gar = trec23.load_gar(scorer, corpus_graph_dir, num_results=budget, verbose=True, batch_size=batch_size)
     model = bm25 % budget >> gar
 

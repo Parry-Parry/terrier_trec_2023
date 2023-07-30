@@ -25,8 +25,13 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     qr = trec23.load_qr(CONFIG['FLANT5_XXL_PATH'], llm_kwargs={'device_map' : 'sequential', 'load_in_8bit' : True, 'device' : device})
 
     bm25 = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa', threads=4).bm25()
+    '''
     electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
-    model = qr >> bm25 % budget >> pt.apply.generic(lambda x : pt.model.pop_queries(x)) >> pt.text.get_text(text_ref, 'text') >> H5CacheScorer('/resources/electracache', electra)
+    scorer = pt.text.get_text(text_ref, 'text') >> H5CacheScorer('/resources/electracache', electra)
+    '''
+    electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
+    scorer = pt.text.get_text(text_ref, 'text') >> electra
+    model = qr >> bm25 % budget >> pt.apply.generic(lambda x : pt.model.pop_queries(x)) >> scorer
 
     logging.info('Done.')
 
