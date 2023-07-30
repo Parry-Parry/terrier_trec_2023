@@ -7,6 +7,8 @@ import os
 import numpy as np
 import pandas as pd
 import pyterrier as pt
+if not pt.started():
+    pt.init()
 from npids import Lookup
 import ir_datasets
 import shutil
