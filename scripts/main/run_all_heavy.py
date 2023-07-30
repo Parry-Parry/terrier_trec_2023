@@ -4,7 +4,7 @@ from os.path import join
 import logging
 import subprocess as sp
 
-irds = r'irds:msmarco-passage-v2/trec-dl-2021/judged'
+irds = r'irds:msmarco-passage-v2/trec-dl-2022/judged'
 budget = '1000'
 DIR = r'/resources/terrier_trec_2023/scripts/main/'
 OUT_DIR = r'/resources/TREC23/eval/main/dl22'
