@@ -23,7 +23,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     splade_dir = copy_path(CONFIG['SPLADE_MARCOv2_PATH'])
     logging.info('SPLADE Copied.')
     logging.info('Copying Corpus Graph...')
-    corpus_graph_dir = copy_path(CONFIG['CORPUS_GRAPH_PATH'])
+    corpus_graph_dir = copy_path(CONFIG['GAR_GRAPH_PATH'])
     logging.info('Corpus Graph Copied.')
     text_ref = pt.get_dataset('irds:msmarco-passage-v2')
     splade = trec23.load_splade(splade_dir, '/tmp/msmarco-passage-v2-dedup.splade.pisa', device=device)

@@ -20,7 +20,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     logging.info('Loading model...')
     logging.info('Copying Corpus Graph...')
-    corpus_graph_dir = copy_path(CONFIG['CORPUS_GRAPH_PATH'])
+    corpus_graph_dir = copy_path(CONFIG['GAR_GRAPH_PATH'])
     logging.info('Corpus Graph Copied.')
 
     text_ref = pt.get_dataset('irds:msmarco-passage-v2')
