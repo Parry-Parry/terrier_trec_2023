@@ -19,7 +19,7 @@ def dedupe_res(path : str, out : str, runname : str = None):
         new_res['run_name'] = runname
 
     cut_new_res = new_res.groupby('qid').apply(lambda x: x.sort_values('rank').head(100)).reset_index(drop=True)
-
+    
     pt.io.write_results(cut_new_res, out)
 
 if __name__ == '__main__':

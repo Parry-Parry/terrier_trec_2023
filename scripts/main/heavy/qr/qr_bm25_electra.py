@@ -25,7 +25,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
 
     qr = trec23.load_qr(CONFIG['FLANT5_XXL_PATH'], llm_kwargs={'device_map' : 'sequential', 'load_in_8bit' : True, 'device' : device})
 
-    bm25 = pt.BatchRetrieve(index_path, wmodel="BM25") 
+    bm25 = pt.BatchRetrieve(f'/{index_path}', wmodel="BM25")
     if use_cache:
         electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
         scorer = pt.text.get_text(text_ref, 'text') >> H5CacheScorer('/resources/electracache', electra)
