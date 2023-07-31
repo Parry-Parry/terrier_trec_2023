@@ -11,7 +11,7 @@ from fire import Fire
 import torch
 import logging
 
-def main(out_dir : str, irds : str = None, path : str = None, name : str = None, budget : int = 5000):
+def main(out_dir : str, irds : str = None, path : str = None, name : str = None, budget : int = 5000, qrels : str = None):
     assert irds is not None or path is not None, 'Either irds or path must be specified'
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -27,7 +27,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     ### EVALUATE ###
 
     logging.info('Evaluating model...')
-    evaluate(model, out_dir, irds, path, name)
+    evaluate(model, out_dir, irds, path, name, qrels)
     logging.info('Done.')
     
 if __name__ == '__main__':
