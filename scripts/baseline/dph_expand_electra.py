@@ -22,7 +22,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     text_ref = pt.get_dataset('irds:msmarco-passage-v2')
 
     indexref = pt.IndexRef.of(CONFIG["TERRIER_MARCOv2_PATH"])
-    dph = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa').dph()
+    dph = pt.BatchRetrieve(trec23.CONFIG["TERRIER_MARCOv2_PATH"], wmodel="DPH")
     dph_expand = dph >> pt.rewrite.Bo1QueryExpansion(indexref) >> dph % budget
 
     electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device)

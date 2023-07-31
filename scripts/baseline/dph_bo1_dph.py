@@ -21,7 +21,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     logging.info('Loading model...')
 
     indexref = pt.IndexRef.of(CONFIG["TERRIER_MARCOv2_PATH"])
-    dph = trec23.load_pisa(path='/tmp/msmarco-passage-v2-dedup.pisa').dph()
+    dph = pt.BatchRetrieve(trec23.CONFIG["TERRIER_MARCOv2_PATH"], wmodel="DPH")
     model = dph >> pt.rewrite.Bo1QueryExpansion(indexref) >> dph % budget
 
     logging.info('Done.')
