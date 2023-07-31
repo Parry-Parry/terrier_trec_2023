@@ -31,7 +31,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     else:
         electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
         scorer = pt.text.get_text(text_ref, 'text') >> electra
-    model = qr >> bm25 % budget >> pt.apply.generic(lambda x : query_swap(x)) >> scorer
+    model = qr >> bm25 % budget >> pt.apply.generic(lambda x : pt.model.pop_queries(x)) >> scorer
 
     logging.info('Done.')
 

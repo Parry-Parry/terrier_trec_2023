@@ -23,6 +23,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     corpus_graph_dir = copy_path(CONFIG['GAR_GRAPH_PATH'])
     logging.info('Corpus Graph Copied.')
 
+
     text_ref = pt.get_dataset('irds:msmarco-passage-v2')
 
     prf = trec23.load_prf(CONFIG['FLANT5_XXL_PATH'], llm_kwargs={'device_map' : 'sequential', 'load_in_8bit' : True, 'device' : devices[0]})
@@ -35,7 +36,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
         scorer = pt.text.get_text(text_ref, 'text') >> electra
     gar = trec23.load_gar(scorer, corpus_graph_dir, num_results=budget, verbose=True, batch_size=batch_size)
     bm25_expand = bm25 % budget >> pt.text.get_text(text_ref, 'text') >> prf >> bm25
-    model = bm25_expand >> pt.apply.generic(lambda x : query_swap(x))  >> gar
+    model = bm25_expand >> pt.apply.generic(lambda x : pt.model.pop_queries(x))  >> gar
 
     logging.info('Done.')
 
