@@ -8,7 +8,7 @@ lookup = {
 
 }
 
-def main(parent_dir : str, out_dir):
+def main(parent_dir : str, out_dir, cut : bool = False):
     # find all files in parent_dir and subdirs with extension .gz
     # for each file, run expansion on it
     # save to out_dir
@@ -23,7 +23,7 @@ def main(parent_dir : str, out_dir):
                     print(f'No lookup for {name}')
                     continue
                 path = os.path.join(root, file)
-                dedupe_res(path, out_dir, runname)
+                dedupe_res(path, out_dir, runname, cut=cut)
 
 if __name__ == '__main__':
     Fire(main)
