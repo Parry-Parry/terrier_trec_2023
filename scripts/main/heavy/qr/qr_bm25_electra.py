@@ -3,7 +3,7 @@ if not pt.started():
     pt.init()
 
 import trec23
-from trec23 import CONFIG, evaluate, H5CacheScorer
+from trec23 import CONFIG, evaluate, H5CacheScorer, query_swap
 import os
 
 from fire import Fire
@@ -21,11 +21,9 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     logging.info('Loading model...')
 
     text_ref = pt.get_dataset('irds:msmarco-passage-v2')
-    index_path = trec23.copy_path(trec23.CONFIG["TERRIER_MARCOv2_PATH"])
 
     qr = trec23.load_qr(CONFIG['FLANT5_XXL_PATH'], llm_kwargs={'device_map' : 'sequential', 'load_in_8bit' : True, 'device' : device})
 
-    #index = pt.IndexFactory.of(str(index_path))
     bm25 = pt.BatchRetrieve(trec23.CONFIG["TERRIER_MARCOv2_PATH"], wmodel="BM25")
     if use_cache:
         electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
@@ -33,7 +31,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     else:
         electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device, batch_size=batch_size, verbose=False)
         scorer = pt.text.get_text(text_ref, 'text') >> electra
-    model = qr >> bm25 % budget >> pt.apply.generic(lambda x : pt.model.pop_queries(x)) >> scorer
+    model = qr >> bm25 % budget >> pt.apply.generic(lambda x : query_swap(x)) >> scorer
 
     logging.info('Done.')
 

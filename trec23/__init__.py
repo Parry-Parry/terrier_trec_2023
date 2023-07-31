@@ -74,6 +74,11 @@ def copy_path(path : str):
         new_dir = shutil.copytree(path, os.path.join('/tmp', base))
     return new_dir
 
+def query_swap(df):
+    df['query'] = df['query_0']
+    df.drop(columns=['query_0'], inplace=True)
+    return df
+
 try:
     os.chdir('/')
     with open(os.getenv("TREC_CONFIG", "CONFIG.json"), 'r') as f:
