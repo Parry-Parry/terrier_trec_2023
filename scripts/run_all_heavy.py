@@ -18,7 +18,7 @@ def main(out_dir : str, path : str = None, irds : str = None, budget : int = 100
             spath = join(script_dir, script)
             name = script.strip('.py')
             if os.path.isdir(join(out_dir, name)):
-                logging.info(f'Skipping {name} as it already exists.')
+                logging.info(f'Skipping {name} as it already exists in path {join(out_dir, name)}.')
                 continue
             args = f'python {spath} --out_dir {join(out_dir, name)}  --name {name} --budget {budget}'
             args += f' --batch_size {64}'
