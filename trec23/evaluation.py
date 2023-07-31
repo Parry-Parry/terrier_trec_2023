@@ -14,7 +14,7 @@ def generate_experiment(*models, dataset=None, **kwargs):
 
         tmp_qrels = kwargs.get("qrels", None)
         if tmp_qrels is not None:
-            qrels = pd.read_csv(tmp_qrels, sep='\t', index_col=False, lineterminator='\n', dtype={'qid': str, 'docno': str, 'relevance': int, 'iteration' : str})
+            qrels = pd.read_csv(tmp_qrels, sep='\t', index_col=False, lineterminator='\n', dtype={'qid': str, 'docno': str, 'label': int, 'iteration' : str})
 
     args = {
         "retr_systems" : list(models),
