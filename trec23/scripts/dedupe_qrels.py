@@ -20,7 +20,7 @@ def main(dataset : str, out_dir : str):
     qrels = ds.get_qrels()
 
     qrels = qrels[~qrels['docno'].isin(super_lookup)]
-    qrels.to_csv(join(out_dir, f'dedupe.{dataset}.tsv'), sep='\t', index=False)
+    qrels.to_csv(out_dir, sep='\t', index=False)
 
 if __name__ == '__main__':
     Fire(main)
