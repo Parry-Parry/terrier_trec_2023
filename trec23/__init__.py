@@ -69,9 +69,9 @@ def evaluate(model, out_dir : str, irds : str, path : str, name : str):
 
 def copy_path(path : str):
     base = os.path.basename(path)
-    new_dir = os.path.join('/tmp', base)
+    new_dir = os.path.join('tmp', base)
     if not os.path.isdir(new_dir):
-        new_dir = shutil.copytree(path, os.path.join('/tmp', base))
+        new_dir = shutil.copytree(path, os.path.join('tmp', base))
     return new_dir
 
 try:
