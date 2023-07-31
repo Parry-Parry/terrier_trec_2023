@@ -5,6 +5,7 @@ import os
 from trec23 import CONFIG, MarcoDuplicator
 import json 
 import gzip 
+from os.path import join
 
 def dedupe_res(path : str, out : str, runname : str = None):
     lookup = json.load(gzip.open(CONFIG['MARCOv2_DUPE_PATH'], 'rb'))
@@ -20,7 +21,7 @@ def dedupe_res(path : str, out : str, runname : str = None):
 
     cut_new_res = new_res.groupby('qid').apply(lambda x: x.sort_values('rank').head(100)).reset_index(drop=True)
     cut_new_res.sort_by(['qid', 'rank'], inplace=True)
-    pt.io.write_results(cut_new_res, out)
+    pt.io.write_results(cut_new_res, join(out, f'cut.{os.path.basename(path)}'), runname=runname)
 
 if __name__ == '__main__':
     Fire(dedupe_res)
