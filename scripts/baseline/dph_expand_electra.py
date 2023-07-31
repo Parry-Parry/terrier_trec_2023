@@ -26,7 +26,7 @@ def main(out_dir : str, irds : str = None, path : str = None, name : str = None,
     dph_expand = dph >> pt.rewrite.Bo1QueryExpansion(indexref) >> dph % budget
 
     electra = trec23.load_electra(CONFIG['ELECTRA_MARCO_PATH'], device=device)
-    model = dph_expand >> pt.text.get_text(text_ref, "text") >> electra
+    model = dph_expand >> pt.apply.generic(lambda x : pt.model.pop_queries(x)) >>pt.text.get_text(text_ref, "text") >> electra
 
     logging.info('Done.')
 

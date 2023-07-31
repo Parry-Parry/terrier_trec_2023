@@ -5,7 +5,18 @@ import os
 BASE = 'uofgtr_'
 
 lookup = {
-
+    'bm25_electra' : 'be',
+    'bm25_gar_electra' : 'be_gb',
+    'splade_gar_electra' : 'se_gb',
+    'splade_electra' : 'se',
+    'dph' : 'dph',
+    'dph_bo1_dph' : 'dph_bo1',
+    'dph_expand_electra' : 'dph_bo1_e',
+    'splade_solo' : 's',
+    'bm25_grf_electra' : 'b_grf_e',
+    'bm25_grf_gar_electra' : 'b_grf_e_gb',
+    'qr_bm25_electra' : 'qr_be',
+    'qr_bm25_gar_electra' : 'qr_be_gb',
 }
 
 def main(parent_dir : str, out_dir, cut : bool = False):
