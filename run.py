@@ -5,7 +5,7 @@ import subprocess as sp
 import logging
 import trec23
 
-def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, budget : int = 5000, script_name : str = None, batch_size : int = None):
+def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, budget : int = 5000, script_name : str = None, batch_size : int = None, use_cache=False):
     assert irds is not None or path is not None, 'Either irds or path must be specified'
     os.makedirs(out_dir, exist_ok=True)
 
@@ -22,6 +22,8 @@ def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, 
         trec23.copy_index(path=trec23.CONFIG["PISA_SPLADE_PATH"])
         logging.info('Done.')
 
+    trec23.copy_path(trec23.CONFIG["TERRIER_MARCOv2_PATH"])
+
     if script_name is not None:
         scripts = [script_name]
 
@@ -35,6 +37,7 @@ def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, 
         if batch_size: args += f' --batch_size {batch_size}'
         if irds: args += f' --irds {irds}'
         if path: args += f' --path {path}'
+        if use_cache: args += ' --use_cache'
         logging.info(f'Running {args}')
         sp.run(args, shell=True)
 
