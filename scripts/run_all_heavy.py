@@ -10,7 +10,7 @@ DIR = r'/resources/terrier_trec_2023/scripts/main/'
 
 SUBDIRS = ['light', 'heavy/qr', 'heavy/prf']
 
-def main(out_dir : str, path : str = None, irds : str = None, budget : int = 1000, use_cache=False, qrels : str = None, no_dl : bool = False):
+def main(out_dir : str, path : str = None, irds : str = None, budget : int = 1000, use_cache=False, qrels : str = None, no_dl : bool = False, batch_size : int = 64):
     for d in SUBDIRS:
         script_dir = join(DIR, d)
         scripts = [f for f in os.listdir(script_dir) if not '__' in f]
@@ -21,7 +21,7 @@ def main(out_dir : str, path : str = None, irds : str = None, budget : int = 100
                 logging.info(f'Skipping {name} as it already exists in path {join(out_dir, name)}.')
                 continue
             args = f'python {spath} --out_dir {join(out_dir, name)}  --name {name} --budget {budget}'
-            args += f' --batch_size {64}'
+            args += f' --batch_size {batch_size}'
             if irds: args += f' --irds {irds}'
             if path: args += f' --path {path}'
             if use_cache: args += ' --use_cache'
