@@ -1,4 +1,5 @@
 import pyterrier as pt
+import pandas as pd
 
 def generate_experiment(*models, dataset=None, **kwargs):
     if not pt.started(): 
@@ -10,6 +11,10 @@ def generate_experiment(*models, dataset=None, **kwargs):
     else:
         topics = dataset.get_topics()
         qrels = dataset.get_qrels()
+
+        tmp_qrels = kwargs.get("qrels", None)
+        if tmp_qrels is not None:
+            qrels = pd.read_csv(tmp_qrels, sep='\t', index_col=False, lineterminator='\n')
 
     args = {
         "retr_systems" : list(models),

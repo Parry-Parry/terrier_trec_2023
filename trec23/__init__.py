@@ -52,12 +52,12 @@ def load_colbert(model_name_or_path : str,
 
     return pytcolbert.text_scorer() if mode != 'e2e' else pytcolbert.end_to_end()
 
-def evaluate(model, out_dir : str, irds : str, path : str, name : str):
+def evaluate(model, out_dir : str, irds : str, path : str, name : str, qrels : str = None):
     if not pt.started():
         pt.init()
     if irds is not None:
         ds = pt.get_dataset(irds)
-        std = generate_experiment(model, names=[name], dataset=ds, metrics=METRICS)
+        std = generate_experiment(model, names=[name], dataset=ds, metrics=METRICS, qrels=qrels)
         os.makedirs(out_dir, exist_ok=True)
         std.to_csv(join(out_dir, f'results.tsv'), sep='\t', index=False)
         #per_query.to_csv(join(out_dir, f'perquery.tsv'), sep='\t', index=False)

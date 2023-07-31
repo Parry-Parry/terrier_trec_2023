@@ -5,7 +5,7 @@ import subprocess as sp
 import logging
 import trec23
 
-def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, budget : int = 5000, script_name : str = None, batch_size : int = None, use_cache=False):
+def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, qrels=None, budget : int = 5000, script_name : str = None, batch_size : int = None, use_cache=False):
     assert irds is not None or path is not None, 'Either irds or path must be specified'
     os.makedirs(out_dir, exist_ok=True)
 
@@ -38,6 +38,7 @@ def main(script_dir : str, out_dir : str, irds : str = None, path : str = None, 
         if irds: args += f' --irds {irds}'
         if path: args += f' --path {path}'
         if use_cache: args += ' --use_cache'
+        if qrels: args += f' --qrels {qrels}'
         logging.info(f'Running {args}')
         sp.run(args, shell=True)
 
