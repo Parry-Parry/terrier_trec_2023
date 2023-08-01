@@ -22,7 +22,7 @@ def dedupe_res(path : str, out : str, runname : str = 'pyterrier', cut : bool = 
     if cut: res = res.groupby('qid').apply(lambda x: x.sort_values('rank').head(100)).reset_index(drop=True)
     else: res = res.groupby('qid').apply(lambda x: x.sort_values('rank').head(budget)).reset_index(drop=True)
     res.sort_values(by=["qid", "score"], ascending=[True, False], inplace=True)
-    pt.io.write_results(res, join(out, f'{runname}.res.gz'), runname=runname)
+    pt.io.write_results(res, join(out, f'{runname}.res.gz'), run_name=runname)
 
 if __name__ == '__main__':
     Fire(dedupe_res)
