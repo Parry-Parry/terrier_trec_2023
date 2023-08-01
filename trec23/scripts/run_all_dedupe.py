@@ -2,7 +2,7 @@ from trec23.scripts.dedupe import dedupe_res
 from fire import Fire 
 import os
 
-BASE = 'uofgtr_'
+BASE = 'uogtr_'
 
 lookup = {
     'bm25_electra' : 'be',
