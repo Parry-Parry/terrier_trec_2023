@@ -19,7 +19,7 @@ lookup = {
     'qr_bm25_gar_electra' : 'qr_be_gb',
 }
 
-def main(parent_dir : str, out_dir, cut : bool = False):
+def main(parent_dir : str, out_dir, cut : bool = False, budget : int = 2000):
     # find all files in parent_dir and subdirs with extension .gz
     # for each file, run expansion on it
     # save to out_dir
@@ -34,7 +34,7 @@ def main(parent_dir : str, out_dir, cut : bool = False):
                     print(f'No lookup for {name}')
                     continue
                 path = os.path.join(root, file)
-                dedupe_res(path, out_dir, runname, cut=cut)
+                dedupe_res(path, out_dir, runname, cut=cut, budget=budget)
 
 if __name__ == '__main__':
     Fire(main)
