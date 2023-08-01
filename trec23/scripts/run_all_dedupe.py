@@ -1,4 +1,4 @@
-from .dedupe import dedupe_res
+from trec23.scripts.dedupe import dedupe_res
 from fire import Fire 
 import os
 
