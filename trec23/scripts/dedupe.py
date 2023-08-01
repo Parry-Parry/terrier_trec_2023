@@ -1,5 +1,5 @@
 import pyterrier as pt
-pt.init()
+if not pt.started(): pt.init()
 from fire import Fire
 import os
 from trec23 import CONFIG, MarcoDuplicator
