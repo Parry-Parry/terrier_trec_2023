@@ -19,7 +19,7 @@ lookup = {
     'qr_bm25_gar_electra' : 'qr_be_gb',
 }
 
-def main(parent_dir : str, out_dir, cut : bool = False, budget : int = 2000):
+def main(parent_dir : str, out_dir, cut : bool = False, budget : int = 2000, ignore_lookup : bool = False):
     # find all files in parent_dir and subdirs with extension .gz
     # for each file, run expansion on it
     # save to out_dir
@@ -28,11 +28,14 @@ def main(parent_dir : str, out_dir, cut : bool = False, budget : int = 2000):
         for file in files:
             if file.endswith('.gz'):
                 name = os.path.basename(file).strip('.res.gz')
-                try:
-                    runname = BASE + lookup[name]
-                except KeyError:
-                    print(f'No lookup for {name}')
-                    continue
+                if ignore_lookup:
+                    runname = name
+                else:
+                    try:
+                        runname = BASE + lookup[name]
+                    except KeyError:
+                        print(f'No lookup for {name}')
+                        continue
                 path = os.path.join(root, file)
                 dedupe_res(path, out_dir, runname, cut=cut, budget=budget)
 
